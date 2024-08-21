@@ -41,7 +41,6 @@ function Dropzone() {
             try {
               const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
 
-              // Store file metadata in Firestore
               const fileDocRef = doc(db, `users/${user.id}/files/${file.name}`);
               await setDoc(fileDocRef, {
                 fileName: file.name,
