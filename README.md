@@ -45,6 +45,10 @@ I encountered difficulties with the OpenAI API while trying to parse text from P
 
 https://didero-blush.vercel.app/
 
+## Github Link
+
+https://github.com/Sudershhh/supply-chain
+
 ## Installation
 
 1. Clone the repository:
