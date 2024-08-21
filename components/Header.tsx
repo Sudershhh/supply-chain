@@ -1,11 +1,10 @@
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
-import React from "react";
 import Image from "next/image";
 
 function Header() {
   return (
-    <header className="flex items-center justify-between p-3 bg-white">
+    <header className="flex items-center justify-between p-3 bg-white sticky top-0">
       <Link href="/" className="flex items-center space-x-2">
         <Image
           src="/logo.svg"

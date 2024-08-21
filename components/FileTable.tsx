@@ -5,17 +5,7 @@ import { useEffect, useState } from "react";
 import { collection, query, orderBy } from "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { db } from "@/firebase";
-import Skeleton from "@/components/Skeleton";
-
-interface FileType {
-  id: string;
-  filename: string;
-  timestamp?: Date;
-  fullName: string;
-  downloadUrl: string;
-  type: string;
-  size: number;
-}
+import { FileType } from "@/types/interfaces";
 
 function FileTable() {
   const { user } = useUser();
@@ -49,7 +39,7 @@ function FileTable() {
   }, [docs]);
 
   if (loading) {
-    return <Skeleton className="h-96 w-full" />;
+    return "Loading...";
   }
 
   if (error) {

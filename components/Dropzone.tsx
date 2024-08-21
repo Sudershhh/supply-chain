@@ -5,7 +5,7 @@ import DropzoneComponent from "react-dropzone";
 import toast from "react-hot-toast";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
-import { storage, db } from "@/firebase"; // Adjust the path as needed
+import { storage, db } from "@/firebase";
 
 const MAX_SIZE = 34000000;
 
@@ -23,7 +23,6 @@ function Dropzone() {
       try {
         setLoading(true);
 
-        // Create a storage reference and upload the file
         const storageRef = ref(storage, `users/${user.id}/files/${file.name}`);
         const uploadTask = uploadBytesResumable(storageRef, file);
 
