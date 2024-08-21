@@ -41,6 +41,10 @@
 
 I encountered difficulties with the OpenAI API while trying to parse text from PDF files. The API was unable to effectively handle PDFs, which led to challenges in extracting the needed text.
 
+## Deployed Site
+
+https://didero-blush.vercel.app/
+
 ## Installation
 
 1. Clone the repository:
