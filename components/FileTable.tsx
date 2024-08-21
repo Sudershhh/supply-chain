@@ -63,6 +63,8 @@ const FileTable: React.FC = () => {
     );
   }
 
+  console.log(files);
+
   return (
     <div className="p-4">
       <button
