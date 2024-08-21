@@ -15,6 +15,7 @@
   - **Firebase**: Real-time database, authentication, and storage.
   - **Firestore**: NoSQL database for storing user and file data.
   - **Firebase Storage**: For managing and storing user files.
+  - **PDF PARSER**: For parsing the pdfs.
 
 - **Future Improvements - Testing :**
 
@@ -44,7 +45,7 @@ I encountered difficulties with the OpenAI API while trying to parse text from P
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repo/didero.git
+   git clone https://github.com/Sudershhh/supply-chain
    ```
 2. Install the dependencies:
    ```bash
