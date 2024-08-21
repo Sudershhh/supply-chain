@@ -1,117 +1,118 @@
-// components/FileTable.tsx
 "use client";
-import React, { useEffect, useState } from "react";
-import { useUser } from "@clerk/nextjs";
-import { collection, query, orderBy, doc, getDocs } from "firebase/firestore";
-import { db } from "@/firebase"; // Adjust the path as needed
-import { FileType } from "@/types/interfaces"; // Adjust the path as needed
 
-const FileTable: React.FC = () => {
+import { useUser } from "@clerk/nextjs";
+import { useEffect, useState } from "react";
+import { collection, query, orderBy } from "firebase/firestore";
+import { useCollection } from "react-firebase-hooks/firestore";
+import { db } from "@/firebase";
+import Skeleton from "@/components/Skeleton";
+
+interface FileType {
+  id: string;
+  filename: string;
+  timestamp?: Date;
+  fullName: string;
+  downloadUrl: string;
+  type: string;
+  size: number;
+}
+
+function FileTable() {
   const { user } = useUser();
   const [files, setFiles] = useState<FileType[]>([]);
   const [sort, setSort] = useState<"asc" | "desc">("desc");
-  const [loading, setLoading] = useState<boolean>(true);
+
+  const [docs, loading, error] = useCollection(
+    user &&
+      query(
+        collection(db, "users", user.id, "files"),
+        orderBy("timestamp", sort)
+      )
+  );
+
+  console.log(docs);
+
   useEffect(() => {
-    if (!user) return;
+    if (!docs) return;
 
-    const fetchFiles = async () => {
-      setLoading(true);
-      try {
-        const filesQuery = query(
-          collection(db, "users", user.id, "files"),
-          orderBy("timestamp", sort)
-        );
-        const querySnapshot = await getDocs(filesQuery);
-        const fileList: FileType[] = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          filename: doc.data().filename || doc.id,
-          timestamp:
-            new Date(doc.data().timestamp?.seconds * 1000) || undefined,
-          fullName: doc.data().fullName,
-          downloadUrl: doc.data().downloadURL,
-          type: doc.data().type,
-          size: doc.data().size,
-        }));
-        setFiles(fileList);
-      } catch (error) {
-        console.error("Error fetching files:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    const fetchedFiles: FileType[] = docs.docs.map((doc) => ({
+      id: doc.id,
+      filename: doc.data().filename || doc.id,
+      timestamp: new Date(doc.data().timestamp?.seconds * 1000) || undefined,
+      fullName: doc.data().fullName,
+      downloadUrl: doc.data().downloadURL,
+      type: doc.data().type,
+      size: doc.data().size,
+    }));
 
-    fetchFiles();
-  }, [user, sort]);
+    setFiles(fetchedFiles);
+  }, [docs]);
 
   if (loading) {
-    return (
-      <div className="p-4">
-        <div className="border rounded-lg">
-          <div className="border-b h-12">
-            {/* Skeleton loader */}
-            <div className="flex items-center space-x-4 p-5 w-full">
-              <div className="h-12 w-12 bg-gray-200 rounded"></div>
-              <div className="h-12 w-full bg-gray-200 rounded"></div>
-            </div>
-            <div className="flex items-center space-x-4 p-5 w-full">
-              <div className="h-12 w-12 bg-gray-200 rounded"></div>
-              <div className="h-12 w-full bg-gray-200 rounded"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return <Skeleton className="h-96 w-full" />;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
   }
 
   console.log(files);
 
   return (
-    <div className="p-4">
+    <div>
       <button
         onClick={() => setSort(sort === "desc" ? "asc" : "desc")}
-        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded"
+        className="m-4 px-4 py-2 bg-black text-white rounded-xl"
       >
         Sort By {sort === "desc" ? "Newest" : "Oldest"}
       </button>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow">
-          <thead>
-            <tr className="border-b">
-              <th className="px-4 py-2 text-left text-gray-600">Filename</th>
-              <th className="px-4 py-2 text-left text-gray-600">Type</th>
-              <th className="px-4 py-2 text-left text-gray-600">Size</th>
-              <th className="px-4 py-2 text-left text-gray-600">Timestamp</th>
-              <th className="px-4 py-2 text-left text-gray-600">Action</th>
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-50">
+          <tr>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Filename
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Upload Date
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Type
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Size
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Download
+            </th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {files.map((file) => (
+            <tr key={file.id}>
+              <td className="px-6 py-4 whitespace-nowrap">{file.filename}</td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                {file.timestamp?.toLocaleDateString()}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">{file.type}</td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                {(file.size / 1024).toFixed(2)} KB
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <a
+                  href={file.downloadUrl}
+                  className="text-blue-600 hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Download
+                </a>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {files.map((file) => (
-              <tr key={file.id} className="border-b hover:bg-gray-100">
-                <td className="px-4 py-2">{file.filename}</td>
-                <td className="px-4 py-2">{file.type}</td>
-                <td className="px-4 py-2">
-                  {(file.size / 1024).toFixed(2)} KB
-                </td>
-                <td className="px-4 py-2">
-                  {file.timestamp?.toLocaleDateString()}
-                </td>
-                <td className="px-4 py-2">
-                  <a
-                    href={file.downloadUrl}
-                    className="text-blue-500 hover:underline"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Download
-                  </a>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
-};
+}
 
 export default FileTable;

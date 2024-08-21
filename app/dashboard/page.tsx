@@ -6,7 +6,7 @@ function page() {
   return (
     <main>
       <Dropzone />
-      <section className="container">
+      <section className="container p-4">
         <h2 className="font-semibold text-center text-xl">All Files</h2>
 
         <FileTable />

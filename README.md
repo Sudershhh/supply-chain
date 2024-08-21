@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Didero
 
-## Getting Started
+**Didero** is a web application for managing and downloading user-uploaded files. It features a clean interface and secure access, making it easy to organize and interact with your files.
 
-First, run the development server:
+## Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Frontend:**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+  - **Next.js**: React framework for server-side rendering and static site generation.
+  - **Tailwind CSS**: Utility-first CSS framework for styling.
+  - **Clerk**: Authentication and user management.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Backend:**
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+  - **Firebase**: Real-time database, authentication, and storage.
+  - **Firestore**: NoSQL database for storing user and file data.
+  - **Firebase Storage**: For managing and storing user files.
 
-## Learn More
+- **Future Improvements - Testing :**
 
-To learn more about Next.js, take a look at the following resources:
+  - **Jest**: JavaScript testing framework for unit and integration tests.
+  - **React Testing Library (RTL)**: For testing Dropzone components.
+  - **Cypress**: End-to-end testing.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Authentication & Security:**
+  - **Clerk**: Multi-factor authentication.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Features
 
-## Deploy on Vercel
+- **User Authentication:**
+  - Sign in and sign out with Clerk.
+- **File Management:**
+  - Upload and manage files.
+  - Sort files by date.
+  - Download files securely.
+- **Real-Time Updates:**
+  - Real-time updates for file changes using Firestore.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Issues
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+I encountered difficulties with the OpenAI API while trying to parse text from PDF files. The API was unable to effectively handle PDFs, which led to challenges in extracting the needed text.
+
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-repo/didero.git
+   ```
+2. Install the dependencies:
+   ```bash
+   npm install
+   ```
+3. Run the app:
+   ```bash
+   npm run dev
+   ```
