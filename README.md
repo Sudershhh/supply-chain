@@ -15,7 +15,8 @@
   - **Firebase**: Real-time database, authentication, and storage.
   - **Firestore**: NoSQL database for storing user and file data.
   - **Firebase Storage**: For managing and storing user files.
-  - **PDF PARSER**: For parsing the pdfs.
+  - **AWS Textract Client**: For parsing the pdfs.
+  - **OPENAI API**: Prompt Engineering to extract relevant invoice data
 
 - **Future Improvements - Testing :**
 
@@ -25,21 +26,22 @@
 
 - **Authentication & Security:**
   - **Clerk**: Multi-factor authentication.
+  - **Jest**: Integration Testing For API Routes
 
 ## Features
 
 - **User Authentication:**
   - Sign in and sign out with Clerk.
 - **File Management:**
-  - Upload and manage files.
-  - Sort files by date.
-  - Download files securely.
+  - Upload, Rename, Delete Invoices.
+  - Sort invoices by date.
+  - Download invoices securely.
+- **Sophisticated Text Extraction with AWS**
+- **Prompt Engineer as you need for invoice data**
 - **Real-Time Updates:**
   - Real-time updates for file changes using Firestore.
 
 ## Issues
-
-I encountered difficulties with the OpenAI API while trying to parse text from PDF files. The API was unable to effectively handle PDFs, which led to challenges in extracting the needed text.
 
 ## Deployed Site
 
