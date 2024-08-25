@@ -41,7 +41,10 @@
 - **Real-Time Updates:**
   - Real-time updates for file changes using Firestore.
 
-## Issues
+## API WORKFLOW
+
+![API Workflow drawio](https://github.com/user-attachments/assets/2f5ac7e3-c0f4-40cd-94f0-6fdc14ca397b)
+
 
 ## Deployed Site
 
