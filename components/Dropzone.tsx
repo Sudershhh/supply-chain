@@ -1,66 +1,61 @@
 "use client";
-import React, { useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import DropzoneComponent from "react-dropzone";
 import toast from "react-hot-toast";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { doc, setDoc } from "firebase/firestore";
-import { storage, db } from "@/firebase";
+
+import { useAppStore } from "@/store/store";
+import {
+  readFileAsBase64,
+  parseDocument,
+  extractInvoiceInfo,
+} from "./apiRoutes";
 
 const MAX_SIZE = 34000000;
 
 function Dropzone() {
-  const [loading, setLoading] = useState(false);
   const { isSignedIn, user } = useUser();
+  const [
+    setIsUploadModalOpen,
+    setUploadProgress,
+    setExtractedData,
+    setFileToUpload,
+  ] = useAppStore((state) => [
+    state.setIsUploadModalOpen,
+    state.setUploadProgress,
+    state.setExtractedData,
+    state.setFileToUpload,
+  ]);
 
   const onDrop = async (acceptedFiles: File[]) => {
     if (!isSignedIn || !user) {
       toast.error("You must be signed in to upload files.");
       return;
     }
+    if (acceptedFiles.length === 0) return;
 
-    acceptedFiles.forEach(async (file) => {
-      try {
-        setLoading(true);
+    const file = acceptedFiles[0];
+    setFileToUpload(file);
 
-        const storageRef = ref(storage, `users/${user.id}/files/${file.name}`);
-        const uploadTask = uploadBytesResumable(storageRef, file);
+    setIsUploadModalOpen(true);
+    setUploadProgress(0);
 
-        uploadTask.on(
-          "state_changed",
-          (snapshot) => {
-            const progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log(`Upload is ${progress}% done`);
-          },
-          (error) => {
-            console.error(error);
-            toast.error("Error uploading file");
-          },
-          async () => {
-            try {
-              const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+    try {
+      const base64File = await readFileAsBase64(file);
+      setUploadProgress(25);
 
-              const fileDocRef = doc(db, `users/${user.id}/files/${file.name}`);
-              await setDoc(fileDocRef, {
-                fileName: file.name,
-                fileURL: downloadURL,
-              });
+      const parsedPdf = await parseDocument(base64File);
+      setUploadProgress(50);
 
-              toast.success("File uploaded successfully!");
-            } catch (error) {
-              console.error(error);
-              toast.error("Error saving file metadata");
-            }
-          }
-        );
-      } catch (error) {
-        console.error(error);
-        toast.error("Error processing file");
-      } finally {
-        setLoading(false);
-      }
-    });
+      const invoiceInfo = await extractInvoiceInfo(parsedPdf);
+      setUploadProgress(75);
+
+      setExtractedData(invoiceInfo);
+
+      setUploadProgress(100);
+    } catch (error) {
+      toast.error("Error processing file");
+      setIsUploadModalOpen(false);
+    }
   };
 
   return (
@@ -83,7 +78,7 @@ function Dropzone() {
                 className={`w-full h-52 flex justify-center items-center p-5 border border-dashed rounded-lg text-center ${
                   isDragActive
                     ? "bg-[#035FFE] text-white animate-pulse"
-                    : "bg-slate-100/50 dark:bg-slate-800/80 text-slate-400"
+                    : "bg-slate-300/50 dark:bg-slate-800/80 text-slate-400"
                 } ${isFileTooLarge ? "border-red-500" : ""}`}
               >
                 <input {...getInputProps()} />

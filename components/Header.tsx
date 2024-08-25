@@ -1,8 +1,11 @@
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+"use client";
+import { UserButton, SignInButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import Image from "next/image";
+import { Button } from "./ui/button";
 
 function Header() {
+  const { isSignedIn } = useUser();
   return (
     <header className="flex items-center justify-between p-3 bg-white sticky top-0">
       <Link href="/" className="flex items-center space-x-2">
@@ -16,20 +19,18 @@ function Header() {
         <h1 className="font-bold text-xl">Didero</h1>
       </Link>
 
-      <div className="flex items-center space-x-8">
-        <Link
-          href="/dashboard"
-          className="bg-black text-white p-2 rounded-xl hover:bg-gray-800 transition-colors duration-300 ease-in-out"
-        >
-          Dashboard
+      <div className="flex items-center justify-around w-1/6">
+        <Link href="/dashboard">
+          <Button size={"sm"}>Dashboard</Button>
         </Link>
 
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
-        <SignedOut>
-          <SignInButton forceRedirectUrl="/dashboard" />
-        </SignedOut>
+        <UserButton />
+
+        {!isSignedIn && (
+          <SignInButton forceRedirectUrl="/dashboard">
+            <Button size={"sm"}>Sign In</Button>
+          </SignInButton>
+        )}
       </div>
     </header>
   );

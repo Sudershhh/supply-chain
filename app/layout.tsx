@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
+// import { ThemeProvider } from "@/components/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "Didero - Supply Chain",
@@ -18,7 +19,11 @@ export const metadata: Metadata = {
     "Logistics",
     "Didero",
   ],
-  viewport: "width=device-width, initial-scale=1",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -27,17 +32,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="icon" href="/logo.svg" />
-      </head>
-      <body className="bg-white">
-        <ClerkProvider>
+    <ClerkProvider afterSignOutUrl={"/"}>
+      <html lang="en">
+        <head>
+          <link rel="icon" href="/logo.svg" type="image/svg+xml" sizes="any" />
+        </head>
+
+        <body className={`${inter.className} bg-white`}>
+          {/* <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          > */}
           <Header />
+
           {children}
-        </ClerkProvider>
-        <Toaster position="top-center" />
-      </body>
-    </html>
+
+          <Toaster position="top-center" />
+          {/* </ThemeProvider> */}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
