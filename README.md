@@ -45,7 +45,7 @@
 
 ## Deployed Site
 
-https://didero-blush.vercel.app/
+[https://supply-chain-navy.vercel.app/](https://supply-chain-navy.vercel.app/)
 
 ## Github Link
 
