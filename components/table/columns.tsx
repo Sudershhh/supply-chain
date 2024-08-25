@@ -24,7 +24,6 @@ export const columns: ColumnDef<FileType>[] = [
     cell: ({ renderValue, ...props }) => (
       <a
         href={renderValue() as string}
-        // target="_blank"
         target="_blank"
         rel="noopener noreferrer"
         className="underline text-blue-500 hover:text-blue-600 cursor-pointer"
