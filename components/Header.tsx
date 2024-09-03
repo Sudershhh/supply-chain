@@ -16,7 +16,7 @@ function Header() {
           className="object-cover"
           alt="Logo - Supply Chain"
         />
-        <h1 className="font-bold text-xl">Didero</h1>
+        <h1 className="font-bold text-xl">Invoice AI</h1>
       </Link>
 
       <div className="flex items-center justify-around w-1/6">
