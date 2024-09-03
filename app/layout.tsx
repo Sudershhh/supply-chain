@@ -7,9 +7,9 @@ import { Toaster } from "react-hot-toast";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Invoice AI",
+  title: "Didero - Supply Chain",
   description:
-    "Invoice AI is a comprehensive supply chain management tool designed to streamline your operations, enhance visibility, and optimize efficiency.",
+    "Didero is a comprehensive supply chain management tool designed to streamline your operations, enhance visibility, and optimize efficiency.",
   keywords: [
     "Supply Chain",
     "Management",
